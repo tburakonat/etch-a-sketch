@@ -2,7 +2,7 @@ let gridItems = []
 let mousedown
 
 function createGrid(columns) {
-    let userInput = columns || prompt("How many columns do you want")
+    let userInput = columns || prompt("How many columns do you want (max. 64)")
     if (!userInput || userInput > 64) {
         userInput = 16
     }
@@ -19,10 +19,15 @@ function createGrid(columns) {
         gridContainer.style.gridTemplateColumns = `repeat(${userInput}, 1fr)`
         gridContainer.append(div)
     }
+
+    colorGridItems()
+}
+
+function colorGridItems() {
     gridItems = [...document.getElementsByClassName("grid-item")]
     gridItems.forEach(item => {
         item.addEventListener("click", (e) => {
-            toggleColor(e)
+            lightenColor(e)
         })
         item.addEventListener("mousedown", (e) => {
             mousedown = true
@@ -33,12 +38,47 @@ function createGrid(columns) {
         item.addEventListener("mouseover", (e) => {
             toggleColor(e)
         })
-    })
+    })    
 }
 
 function toggleColor(e) {
-    if (mousedown || e.type === "click") {
-        e.target.classList.toggle("colored")
+    if ( mousedown || e.type === "click") { // mousedown is a custom variable
+        const {randomB, randomG, randomR} = createNewColor()
+        
+        e.target.style.backgroundColor = `rgba(${randomR},${randomG},${randomB})`
+    }
+}
+
+function lightenColor(e) {
+    const prevOpacity = window.getComputedStyle(e.target).opacity
+    const backgroundColor = window.getComputedStyle(e.target).backgroundColor
+    
+    if (backgroundColor === "rgba(51, 51, 51, 0.1)") {
+        const {randomB, randomG, randomR} = createNewColor()
+    
+        e.target.style.backgroundColor = `rgba(${randomR},${randomG},${randomB})`
+    }
+    
+    if (prevOpacity > 0) {
+        const newOpacity = prevOpacity - 0.1
+        e.target.style.opacity = newOpacity
+    } else {
+        const {randomB, randomG, randomR} = createNewColor()
+    
+        e.target.style.backgroundColor = `rgba(${randomR},${randomG},${randomB})`
+        e.target.style.opacity = prevOpacity + 1
+    }
+}
+
+function createNewColor() {
+    const randomR = Math.floor(Math.random() * 256)
+    const randomG = Math.floor(Math.random() * 256)
+    const randomB = Math.floor(Math.random() * 256)
+
+    return {
+        randomR,
+        randomG,
+        randomB,
     }
 }
 

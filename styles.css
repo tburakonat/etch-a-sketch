@@ -43,15 +43,11 @@ aside {
 }
 
 #grid-container div {
-    border: 0.5px solid #333;
+    border: 0.1px solid rgba(51, 51, 51, 0.3);
 }
 
 #grid-container div:hover {
-    background-color: rgba(51, 51, 51, 0.8);
-}
-
-.colored {
-    background-color: #333;
+    background-color: rgba(51, 51, 51, 0.1);
 }
 
 footer {
