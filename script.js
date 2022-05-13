@@ -1,6 +1,12 @@
+let gridItems = []
+let mousedown
+
 function createGrid(columns) {
     let userInput = columns || prompt("How many columns do you want")
-    userInput > 40 ? userInput = 40 : userInput
+    if (!userInput || userInput > 64) {
+        userInput = 16
+    }
+
     const gridContainer = document.getElementById("grid-container")
 
     while (gridContainer.firstChild) {
@@ -9,8 +15,30 @@ function createGrid(columns) {
 
     for (let i = 0; i < (userInput * userInput); i++) {
         const div = document.createElement("div")
-        gridContainer.style.gridTemplateColumns = `repeat(${userInput}, 15px)`
+        div.classList.add("grid-item")
+        gridContainer.style.gridTemplateColumns = `repeat(${userInput}, 1fr)`
         gridContainer.append(div)
+    }
+    gridItems = [...document.getElementsByClassName("grid-item")]
+    gridItems.forEach(item => {
+        item.addEventListener("click", (e) => {
+            toggleColor(e)
+        })
+        item.addEventListener("mousedown", (e) => {
+            mousedown = true
+        })
+        item.addEventListener("mouseup", (e) => {
+            mousedown = false
+        })
+        item.addEventListener("mouseover", (e) => {
+            toggleColor(e)
+        })
+    })
+}
+
+function toggleColor(e) {
+    if (mousedown || e.type === "click") {
+        e.target.classList.toggle("colored")
     }
 }
 
