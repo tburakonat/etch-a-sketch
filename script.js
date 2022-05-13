@@ -1,5 +1,6 @@
 function createGrid(columns) {
-    const userInput = columns || prompt("How many columns do you want")
+    let userInput = columns || prompt("How many columns do you want")
+    userInput > 40 ? userInput = 40 : userInput
     const gridContainer = document.getElementById("grid-container")
 
     while (gridContainer.firstChild) {
